@@ -1,0 +1,2 @@
+open_time, close_time, volume, low_price, high_price, open_price, close_price, ticker, exchange
+4141320000, 4141320060, 6168.033447, 0.06889, 0.06897, 0.06896, 0.0689, 'TRX-USDT', 'okex'

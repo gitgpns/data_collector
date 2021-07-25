@@ -1,4 +1,4 @@
-from cnadleLoaderABC import CandleLoaderABC
+from source.candleLoaderABC import CandleLoaderABC
 import requests
 
 
@@ -50,8 +50,8 @@ class HuobiCandleLoader(CandleLoaderABC):
 
         for elem in data:
             single_candle = dict()
-            single_candle['open_time'] = elem['id']
-            single_candle['close_time'] = elem['id'] + 60
+            single_candle['open_time'] = self.to_utc(elem['id'])
+            single_candle['close_time'] = self.to_utc(elem['id'] + 60)
             single_candle['volume'] = elem['amount']
             single_candle['low_price'] = elem['low']
             single_candle['high_price'] = elem['high']

@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
 import pandas as pd
+from saver.candles_saver_database import CandlesSaverDB
+from saver_ABC import SaverABC
+import datetime
 
 
 class CandleLoaderABC(ABC):
@@ -9,6 +12,8 @@ class CandleLoaderABC(ABC):
         self._end_timestamp = pd.to_datetime(end_date).timestamp()
         self._step = step
         self._saving_place = saving_place
+
+        self._data_saver: SaverABC = CandlesSaverDB()
 
         self._request_periods = None
 
@@ -45,7 +50,11 @@ class CandleLoaderABC(ABC):
         pass
 
     def _save_data_to_csv(self, data):
-        print(data)
+        self._data_saver.save_data(data)
 
     def _save_data_to_db(self, data):
         pass
+
+    @staticmethod
+    def to_utc(timestamp):
+        return datetime.datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')

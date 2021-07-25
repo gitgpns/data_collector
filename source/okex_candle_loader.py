@@ -1,4 +1,4 @@
-from cnadleLoaderABC import CandleLoaderABC
+from source.candleLoaderABC import CandleLoaderABC
 
 import requests
 
@@ -56,8 +56,8 @@ class OkexCandleLoader(CandleLoaderABC):
 
         for elem in data:
             single_candle = dict()
-            single_candle['open_time'] = int(elem[0]) % 10_000_000_000
-            single_candle['close_time'] = int(elem[0]) % 10_000_000_000 + 60
+            single_candle['open_time'] = self.to_utc(int(elem[0]) % 10_000_000_000)
+            single_candle['close_time'] = self.to_utc(int(elem[0]) % 10_000_000_000 + 60)
             single_candle['volume'] = float(elem[6])
             single_candle['low_price'] = float(elem[3])
             single_candle['high_price'] = float(elem[2])

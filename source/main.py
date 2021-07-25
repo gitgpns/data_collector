@@ -1,9 +1,6 @@
-from tqdm import tqdm
-import datetime
-
-from binance_candle_loader import BinanceCandleLoader
-from okex_candle_loader import OkexCandleLoader
-from huobi_candle_loader import HuobiCandleLoader
+from source.binance_candle_loader import BinanceCandleLoader
+from source.okex_candle_loader import OkexCandleLoader
+from source.huobi_candle_loader import HuobiCandleLoader
 
 
 def main(params):
