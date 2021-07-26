@@ -13,7 +13,7 @@ class BinanceCandleLoader(CandleLoaderABC):
     host_name = 'https://fapi.binance.com'
     endpoint = '/fapi/v1/klines'
 
-    def __init__(self, start_date, end_date, step=1500, saving_place='csv'):
+    def __init__(self, start_date, end_date, step=1500, saving_place='database'):
         super().__init__(start_date, end_date, step, saving_place)
 
     def _get_single_period_data(self, period):#TODO refactor different timestamps formats
@@ -51,8 +51,8 @@ class BinanceCandleLoader(CandleLoaderABC):
 
         for elem in data:
             single_candle = dict()
-            single_candle['open_time'] = self.to_utc(elem[0] % 10_000_000_000)
-            single_candle['close_time'] = self.to_utc(elem[0] % 10_000_000_000 + 60)
+            single_candle['open_time'] = self.to_utc(elem[0] / 1000)
+            single_candle['close_time'] = self.to_utc(elem[0] / 1000 + 60)
             single_candle['volume'] = elem[5]
             single_candle['low_price'] = elem[3]
             single_candle['high_price'] = elem[2]

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import pandas as pd
-from saver.candles_saver_database import CandlesSaverDB
+from source.saver.candles_saver_database import CandlesSaverDB
 from saver_ABC import SaverABC
 import datetime
 
@@ -50,10 +50,10 @@ class CandleLoaderABC(ABC):
         pass
 
     def _save_data_to_csv(self, data):
-        self._data_saver.save_data(data)
+        print(data)
 
     def _save_data_to_db(self, data):
-        pass
+        self._data_saver.save_data(data)
 
     @staticmethod
     def to_utc(timestamp):

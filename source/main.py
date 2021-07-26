@@ -25,7 +25,7 @@ def main(params):
 
 if __name__ == "__main__":
     params = {
-        'exchanges': ['okex'],
+        'exchanges': ['huobi'],
         'start_date': '2021-06-20',
         'end_date': '2021-06-21'
     }

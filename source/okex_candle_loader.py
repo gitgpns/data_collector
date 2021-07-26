@@ -5,7 +5,8 @@ import requests
 
 class OkexCandleLoader(CandleLoaderABC):
     period = '1m'
-    pairs = ['BTC-USDT-SWAP', 'ETH-USDT-SWAP', 'LTC-USDT-SWAP', 'ETC-USDT-SWAP', 'XRP-USDT-SWAP', 'EOS-USDT-SWAP', 'BCH-USDT-SWAP', 'BSV-USDT-SWAP', 'TRX-USDT-SWAP']
+    pairs = ['BTC-USDT-SWAP']
+    # pairs = ['BTC-USDT-SWAP', 'ETH-USDT-SWAP', 'LTC-USDT-SWAP', 'ETC-USDT-SWAP', 'XRP-USDT-SWAP', 'EOS-USDT-SWAP', 'BCH-USDT-SWAP', 'BSV-USDT-SWAP', 'TRX-USDT-SWAP']
     db_name = ''
     user_name = ''
     name = 'okex'
@@ -13,11 +14,12 @@ class OkexCandleLoader(CandleLoaderABC):
     host_name = 'https://www.okex.com'
     endpoint = '/api/v5/market/history-candles'
 
-    def __init__(self, start_date, end_date, step=100, saving_place='csv'):
+    def __init__(self, start_date, end_date, step=100, saving_place='database'):
         super(OkexCandleLoader, self).__init__(start_date, end_date, step, saving_place)
 
     def collect_data(self):
         for period in self._request_periods:
+            print(self.to_utc(period[0]))
             self._get_single_period_data(period)
 
     def _get_single_period_data(self, period):
@@ -33,10 +35,12 @@ class OkexCandleLoader(CandleLoaderABC):
 
     def _get_single_pair_data(self, start_date, end_date, pair):
         url = self.host_name + self.endpoint
+        print(self.to_utc(start_date / 1000))
         data = {
             "instId": pair,
             "bar": self.period,
-            "after": start_date,
+            "after": end_date,
+            # "before": end_date,
             "limit": 100
         }
 
@@ -56,8 +60,8 @@ class OkexCandleLoader(CandleLoaderABC):
 
         for elem in data:
             single_candle = dict()
-            single_candle['open_time'] = self.to_utc(int(elem[0]) % 10_000_000_000)
-            single_candle['close_time'] = self.to_utc(int(elem[0]) % 10_000_000_000 + 60)
+            single_candle['open_time'] = self.to_utc(int(elem[0]) / 1000)
+            single_candle['close_time'] = self.to_utc(int(elem[0]) / 1000 + 60)
             single_candle['volume'] = float(elem[6])
             single_candle['low_price'] = float(elem[3])
             single_candle['high_price'] = float(elem[2])

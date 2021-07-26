@@ -11,7 +11,7 @@ class HuobiCandleLoader(CandleLoaderABC):
     endpoint = 'linear-swap-ex/market/history/kline'
     name = 'huobi'
 
-    def __init__(self, start_date, end_date, step=2000, saving_place='csv'):
+    def __init__(self, start_date, end_date, step=2000, saving_place='database'):
         super().__init__(start_date, end_date, step, saving_place)
 
     def _get_single_period_data(self, period):
