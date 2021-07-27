@@ -3,7 +3,7 @@ from source.saver_ABC import SaverABC
 
 
 class CandlesSaverDB(SaverABC):
-    table_name = 'candles'
+    table_name = 'candles_minute'
     dbname = 'oleg'
     user = 'oleg'
     fields = 'open_time, close_time, volume, low_price, high_price, open_price, close_price, ticker, exchange'

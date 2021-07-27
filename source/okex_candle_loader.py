@@ -14,8 +14,8 @@ class OkexCandleLoader(CandleLoaderABC):
     host_name = 'https://www.okex.com'
     endpoint = '/api/v5/market/history-candles'
 
-    def __init__(self, start_date, end_date, step=100, saving_place='database'):
-        super(OkexCandleLoader, self).__init__(start_date, end_date, step, saving_place)
+    def __init__(self, start_date, end_date, step=100, saving_place='database', period=period):
+        super(OkexCandleLoader, self).__init__(start_date, end_date, step, saving_place, period)
 
     def collect_data(self):
         for period in self._request_periods:
@@ -61,7 +61,7 @@ class OkexCandleLoader(CandleLoaderABC):
         for elem in data:
             single_candle = dict()
             single_candle['open_time'] = self.to_utc(int(elem[0]) / 1000)
-            single_candle['close_time'] = self.to_utc(int(elem[0]) / 1000 + 60)
+            single_candle['close_time'] = self.to_utc(int(elem[0]) / 1000 + self._period_in_seconds)
             single_candle['volume'] = float(elem[6])
             single_candle['low_price'] = float(elem[3])
             single_candle['high_price'] = float(elem[2])
