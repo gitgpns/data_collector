@@ -1,26 +1,29 @@
-from source.candleLoaderABC import CandleLoaderABC
+from exchange_candle_loader_abc import CandleLoaderABC
 
 import requests
 
 
 class OkexCandleLoader(CandleLoaderABC):
-    period = '1m'
-    pairs = ['BTC-USDT-SWAP']
-    # pairs = ['BTC-USDT-SWAP', 'ETH-USDT-SWAP', 'LTC-USDT-SWAP', 'ETC-USDT-SWAP', 'XRP-USDT-SWAP', 'EOS-USDT-SWAP', 'BCH-USDT-SWAP', 'BSV-USDT-SWAP', 'TRX-USDT-SWAP']
-    db_name = ''
-    user_name = ''
+    # possible_pairs = ['BTC-USDT-SWAP', 'ETH-USDT-SWAP', 'LTC-USDT-SWAP', 'ETC-USDT-SWAP', 'XRP-USDT-SWAP', 'EOS-USDT-SWAP', 'BCH-USDT-SWAP', 'BSV-USDT-SWAP', 'TRX-USDT-SWAP']
     name = 'okex'
-
     host_name = 'https://www.okex.com'
     endpoint = '/api/v5/market/history-candles'
 
-    def __init__(self, start_date, end_date, step=100, saving_place='database', period=period):
-        super(OkexCandleLoader, self).__init__(start_date, end_date, step, saving_place, period)
+    def __init__(self, start_date, end_date, saver, period, pairs):
+        if period == '60min':
+            step = 96
+        else:
+            step = 100
+
+        parsed_period = self._get_parsed_period(period)
+        super(OkexCandleLoader, self).__init__(start_date, end_date, step, saver, parsed_period, pairs)
 
     def collect_data(self):
         for period in self._request_periods:
             print(self.to_utc(period[0]))
             self._get_single_period_data(period)
+
+        self._data_saver.end_session()
 
     def _get_single_period_data(self, period):
         period_data = list()
@@ -35,12 +38,10 @@ class OkexCandleLoader(CandleLoaderABC):
 
     def _get_single_pair_data(self, start_date, end_date, pair):
         url = self.host_name + self.endpoint
-        print(self.to_utc(start_date / 1000))
         data = {
             "instId": pair,
             "bar": self.period,
             "after": end_date,
-            # "before": end_date,
             "limit": 100
         }
 
@@ -73,3 +74,10 @@ class OkexCandleLoader(CandleLoaderABC):
             result.append(single_candle)
 
         return result
+
+    def _get_parsed_period(self, period):
+        if period in ['1min', '1m']:
+            return '1m'
+
+        elif period in ['60min', '1h']:
+            return '60min'

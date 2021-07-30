@@ -1,34 +1,18 @@
-from source.binance_candle_loader import BinanceCandleLoader
-from source.okex_candle_loader import OkexCandleLoader
-from source.huobi_candle_loader import HuobiCandleLoader
+from config_reader import ConfigReader
+from candle_loader_builder import CandleLoaderBuilder
 
 
-def main(params):
-    start_date = params['start_date']
-    end_date = params['end_date']
-    exchanges = params['exchanges']
-    period = params['period']
+def run():
+    config_reader = ConfigReader()
+    config_reader.read_config()
 
-    if 'binance' in exchanges:
-        binance_loader = BinanceCandleLoader(start_date, end_date, period=period)
-        binance_loader.collect_data()
+    config = config_reader.config
 
-    elif 'huobi' in exchanges:
-        huobi_loader = HuobiCandleLoader(start_date, end_date, period=period)
+    candle_loader_builder = CandleLoaderBuilder(config)
+    candle_loader = candle_loader_builder.build()
 
-        huobi_loader.collect_data()
-
-    elif 'okex' in exchanges:
-        okex_loader = OkexCandleLoader(start_date, end_date, period=period)
-
-        okex_loader.collect_data()
+    candle_loader.collect_exchanges_data()
 
 
 if __name__ == "__main__":
-    params = {
-        'exchanges': ['binance'],
-        'start_date': '2020-6-21',
-        'end_date': '2021-06-21',
-        'period': '1m'
-    }
-    main(params)
+    run()

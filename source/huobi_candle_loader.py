@@ -1,20 +1,23 @@
-from source.candleLoaderABC import CandleLoaderABC
+from exchange_candle_loader_abc import CandleLoaderABC
 import requests
 
 
 class HuobiCandleLoader(CandleLoaderABC):
-    period = '60min'
-    pairs = ['BTC-USDT']#, 'ETH-USDT', 'LTC-USDT', 'DOGE-USDT', 'SHIB-USDT', 'ICP-USDT', 'XRP-USDT', 'LINK-USDT', 'TRX-USDT', 'DOT-USDT', 'ADA-USDT', 'EOS-USDT', 'BCH-USDT', 'BSV-USDT', 'YFI-USDT', 'UNI-USDT', 'FIL-USDT', 'YFII-USDT', 'SNX-USDT', 'BNB-USDT', 'ZEC-USDT', 'DASH-USDT', 'ETC-USDT', 'THETA-USDT', 'KSM-USDT', 'ATOM-USDT', 'AAVE-USDT', 'XLM-USDT', 'SUSHI-USDT', 'GRT-USDT', '1INCH-USDT', 'CRV-USDT', 'XTZ-USDT', 'ALGO-USDT', 'NEO-USDT', 'WAVES-USDT', 'COMP-USDT', 'ZIL-USDT', 'QTUM-USDT', 'XMR-USDT', 'KAVA-USDT', 'RSR-USDT', 'VET-USDT', 'OMG-USDT', 'XEM-USDT', 'ONT-USDT', 'AVAX-USDT', 'ZKS-USDT', 'MDX-USDT', 'MATIC-USDT', 'BAND-USDT', 'LRC-USDT', 'SOL-USDT', 'IOTA-USDT', 'MKR-USDT', 'IOST-USDT', 'REN-USDT', 'CVC-USDT', 'BAT-USDT', 'KNC-USDT', 'NEAR-USDT', 'AKRO-USDT', 'BAL-USDT', 'MANA-USDT', 'SAND-USDT', 'ZEN-USDT', 'BAGS-USDT', 'MASS-USDT', 'BTS-USDT', 'BNT-USDT', 'LUNA-USDT', 'FRONT-USDT', 'WOO-USDT', 'PHA-USDT', 'RVN-USDT', 'CHZ-USDT', 'UMA-USDT', 'SKL-USDT', 'BLZ-USDT', 'ENJ-USDT', 'REEF-USDT', 'ONE-USDT', 'HBAR-USDT', 'STORJ-USDT', 'CRO-USDT', 'LINA-USDT', 'ANKR-USDT', 'RNDR-USDT', 'OGN-USDT', 'BTT-USDT', 'MASK-USDT', 'FORTH-USDT', 'CSPR-USDT', 'XCH-USDT', 'CHR-USDT', 'LAT-USDT', 'O3-USDT']
-    db_name = ''
-    user_name = 'oleg'
+    # possible_pairs = ['BTC-USDT', 'ETH-USDT', 'LTC-USDT', 'DOGE-USDT', 'SHIB-USDT', 'ICP-USDT', 'XRP-USDT', 'LINK-USDT', 'TRX-USDT', 'DOT-USDT', 'ADA-USDT', 'EOS-USDT', 'BCH-USDT', 'BSV-USDT', 'YFI-USDT', 'UNI-USDT', 'FIL-USDT', 'YFII-USDT', 'SNX-USDT', 'BNB-USDT', 'ZEC-USDT', 'DASH-USDT', 'ETC-USDT', 'THETA-USDT', 'KSM-USDT', 'ATOM-USDT', 'AAVE-USDT', 'XLM-USDT', 'SUSHI-USDT', 'GRT-USDT', '1INCH-USDT', 'CRV-USDT', 'XTZ-USDT', 'ALGO-USDT', 'NEO-USDT', 'WAVES-USDT', 'COMP-USDT', 'ZIL-USDT', 'QTUM-USDT', 'XMR-USDT', 'KAVA-USDT', 'RSR-USDT', 'VET-USDT', 'OMG-USDT', 'XEM-USDT', 'ONT-USDT', 'AVAX-USDT', 'ZKS-USDT', 'MDX-USDT', 'MATIC-USDT', 'BAND-USDT', 'LRC-USDT', 'SOL-USDT', 'IOTA-USDT', 'MKR-USDT', 'IOST-USDT', 'REN-USDT', 'CVC-USDT', 'BAT-USDT', 'KNC-USDT', 'NEAR-USDT', 'AKRO-USDT', 'BAL-USDT', 'MANA-USDT', 'SAND-USDT', 'ZEN-USDT', 'BAGS-USDT', 'MASS-USDT', 'BTS-USDT', 'BNT-USDT', 'LUNA-USDT', 'FRONT-USDT', 'WOO-USDT', 'PHA-USDT', 'RVN-USDT', 'CHZ-USDT', 'UMA-USDT', 'SKL-USDT', 'BLZ-USDT', 'ENJ-USDT', 'REEF-USDT', 'ONE-USDT', 'HBAR-USDT', 'STORJ-USDT', 'CRO-USDT', 'LINA-USDT', 'ANKR-USDT', 'RNDR-USDT', 'OGN-USDT', 'BTT-USDT', 'MASK-USDT', 'FORTH-USDT', 'CSPR-USDT', 'XCH-USDT', 'CHR-USDT', 'LAT-USDT', 'O3-USDT']
     host_name = 'https://api.hbdm.com/'
     endpoint = 'linear-swap-ex/market/history/kline'
     name = 'huobi'
 
-    def __init__(self, start_date, end_date, step=2000, saving_place='database', period=period):
-        if period == '60min':
+    def __init__(self, start_date, end_date, saver, period, pairs):
+        if period == '1h':
             step = 1992
-        super().__init__(start_date, end_date, step, saving_place, period=period)
+
+        else:
+            step = 2000
+
+        parsed_period = self._get_parsed_period(period)
+
+        super().__init__(start_date, end_date, step, saver, parsed_period, pairs)
 
     def _get_single_period_data(self, period):
         print(f"CURRENT PERIOD {period[0]} - {period[1]}")
@@ -50,7 +53,6 @@ class HuobiCandleLoader(CandleLoaderABC):
                 print(response)
 
         except ConnectionError:#TODO finish
-            self.save_failed_request()
             print(ConnectionError)
 
     def _get_parsed_response(self, response, pair):
@@ -72,3 +74,13 @@ class HuobiCandleLoader(CandleLoaderABC):
             result.append(single_candle)
 
         return result
+
+    def _get_parsed_period(self, period):
+        if period in ['1m', '1min']:
+            return '1min'
+
+        elif period in ['60min', '1h']:
+            return '60min'
+
+        else:
+            raise ValueError("Wrong period in huobi exchange")

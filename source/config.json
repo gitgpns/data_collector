@@ -1,0 +1,25 @@
+{
+  "start_date": "2021-06-19",
+  "end_date": "2021-06-20",
+  "period": "1m",
+  "saving_to": "database",
+  "user_name": "oleg",
+  "database_name": "oleg",
+  "saving_path": "",
+  "table_creation_sql": "CREATE TABLE IF NOT EXISTS candles (\nopen_time TIMESTAMP NOT NULL,\nclose_time TIMESTAMP NOT NULL,\nvolume DOUBLE PRECISION NOT NULL,\nlow_price DOUBLE PRECISION NOT NULL,\nhigh_price DOUBLE PRECISION NOT NULL,\nopen_price DOUBLE PRECISION NOT NULL,\nclose_price DOUBLE PRECISION NOT NULL,\nticker VARCHAR ( 50 ) NOT NULL,\nexchange VARCHAR ( 50 ) NOT NULL,\nid serial PRIMARY KEY\n);",
+  "table_name": "candles",
+  "exchanges": [
+    {
+      "exchange_name": "binance",
+      "pairs": ["YFIUSDT", "BTCUSDT", "ETHUSDT", "AAVEUSDT", "UNIUSDT", "BNBUSDT", "SUSHIUSDT", "MATICUSDT"]
+    },
+    {
+      "exchange_name": "huobi",
+      "pairs": ["YFI-USDT", "BTC-USDT", "ETH-USDT", "AAVE-USDT", "UNI-USDT", "BNB-USDT", "SUSHI-USDT", "FIL-USDT"]
+    },
+    {
+      "exchange_name": "okex",
+      "pairs": ["BTC-USDT-SWAP", "BTC-USDT-SWAP"]
+    }
+  ]
+}
